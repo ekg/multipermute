@@ -1,0 +1,36 @@
+{
+  "name": "multipermute",
+  "version": "1.0.0",
+  "description": "generate multiset permutations using an efficient loopless algorithm",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js | tap-spec"
+  },
+  "bin": {
+    "multipermute": "cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ekg/multipermute.git"
+  },
+  "keywords": [
+    "multiset",
+    "permutations",
+    "multipermute",
+    "combinatorics",
+    "math"
+  ],
+  "author": "Erik Garrison",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ekg/multipermute/issues"
+  },
+  "homepage": "https://github.com/ekg/multipermute",
+  "dependencies": {
+    "just-a-list": "^0.2.0"
+  },
+  "devDependencies": {
+    "tap-spec": "^2.1.1",
+    "tape": "^3.0.3"
+  }
+}
