@@ -72,4 +72,4 @@ A python library implementation is also included for those who like to indent th
 
 ## multiset combinations
 
-Another repository contains code for multiset combinations: [multichoose](https://github.com/ekg/multichoose)
+Another repository contains code for multiset combinations: [multichoose](https://npmjs.org/package/multichoose) [or on github](https://github.com/ekg/multichoose).
