@@ -36,7 +36,19 @@ multipermute([1,2,3], console.log)
 ```
 
 ``` bash
-% multipermute A B C
+% multipermute 0 1 2 2
+2 2 1 0
+0 2 2 1
+2 0 2 1
+2 2 0 1
+1 2 2 0
+2 1 2 0
+0 2 1 2
+2 0 1 2
+1 2 0 2
+0 1 2 2
+1 0 2 2
+2 1 0 2
 ```
 
 ### multipermute.cpp
@@ -59,7 +71,11 @@ usage:
 Example usage:
 
 ``` bash
-% ./multipermute a t g c
+% ./multipermute A A B
+B A A A
+A B A A
+A A B A
+A A A B
 ```
 
 (Note that this is not currently built as the default binary for the npm module, which uses cli.js.)
