@@ -1,6 +1,4 @@
-
 /*
-"""
 This module encodes functions to generate the permutations of a multiset
 following this algorithm:
 
@@ -32,20 +30,6 @@ while j.n ≠ φ orj.v <h.v do
     h←t 
     visit(h)
 end while
-
-"""
-
-class ListElement:
-    def __init__(self, value, next):
-        self.value = value
-        self.next = next
-    def nth(self, n):
-        o = self
-        i = 0
-        while i < n and o.next is not None:
-            o = o.next
-            i += 1
-        return o
 */
 
 var List = require('just-a-list')
@@ -59,16 +43,6 @@ List.prototype.nth = function(n) {
   }
   return o
 }
-
-
-/*
-def init(multiset):
-    multiset.sort() # ensures proper non-increasing order
-    h = ListElement(multiset[0], None)
-    for item in multiset[1:]:
-        h = ListElement(item, h)
-    return h, h.nth(len(multiset) - 2), h.nth(len(multiset) - 1)
-*/
 
 function init(multiset) {
   multiset.sort()
@@ -110,25 +84,5 @@ function multipermute(multiset, cb) {
     cb(visit(h))
   }
 }
-
-/*
-def permutations(multiset):
-    """Generator providing all multiset permutations of a multiset."""
-    h, i, j = init(multiset)
-    yield visit(h)
-    while j.next is not None or j.value < h.value:
-        if j.next is not None and i.value >= j.next.value:
-            s = j
-        else:
-            s = i
-        t = s.next
-        s.next = t.next
-        t.next = h
-        if t.value < h.value:
-            i = t
-        j = i.next
-        h = t
-        yield visit(h)
-*/
 
 module.exports = multipermute
