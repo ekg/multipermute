@@ -34,23 +34,16 @@ end while
 
 var List = require('just-a-list')
 
-List.prototype.nth = function(n) {
-  var o = this.head
-  var i = 0
-  while (i < n && o.next) {
-    o = o.next
-    ++i
-  }
-  return o
-}
-
 function init(multiset) {
   multiset.sort()
+  var l = multiset.length
   var h = new List()
-  for (var i = 0; i < multiset.length; ++i) {
+  var ultimate = l > 0 ? h.insertBeginning(multiset[0]) : null
+  var penultimate = l > 1 ? h.insertBeginning(multiset[1]) : ultimate
+  for (var i = 2; i < l; ++i) {
     h.insertBeginning(multiset[i])
   }
-  return [h.head, h.nth(multiset.length - 2), h.nth(multiset.length - 1)]  
+  return [h.head, penultimate, ultimate]  
 }
 
 function visit(h) {
