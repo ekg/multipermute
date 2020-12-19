@@ -1,6 +1,19 @@
-var test = require('tape')
-var multipermute = require('./')
+import 'mocha';
+import { expect } from 'chai';
+import multipermute from '../src';
+import { multisets } from './data';
 
+describe("Check permutation count calculations", () => {
+  for (const [multiset, count] of multisets) {
+    it(`Should count permutations for ${ JSON.stringify(multiset) }`, () => {
+      expect(multipermute.count_multiset(multiset)).to.eql(count);
+    });
+  }
+});
+
+
+
+/*
 test('multipermute test', function (t) {
 
   t.plan(4)
@@ -9,7 +22,7 @@ test('multipermute test', function (t) {
 
   var c = [ [ 1, 0 ], [ 0, 1 ] ]
   var r = []
-  multipermute([0,1],
+  multipermute(,
               function(x) {
                 r.push(x)
               })
@@ -21,7 +34,7 @@ test('multipermute test', function (t) {
         [ 1, 1, 0, 1 ] ]
 
   r = []
-  multipermute([0,1,1,1],
+  multipermute(,
               function(x) {
                 r.push(x)
               })
@@ -149,10 +162,11 @@ test('multipermute test', function (t) {
         [ 2, 1, 1, 1, 0, 3 ] ]
 
   r = []
-  multipermute([0,2,1,3,1,1],
+  multipermute(,
               function(x) {
                 r.push(x)
               })
   t.deepEqual(c, r)
 
 });
+*/
