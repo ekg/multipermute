@@ -17,3 +17,12 @@ describe("Check that we correctly reset for cycling", () => {
     });
   }
 });
+
+
+describe("Check that we correctly reset for cycling", () => {
+  it(`Should produce permutations`, () => {
+    for (const p of multipermute([1,1,2,4])) {
+      console.log(p);
+    }
+  });
+});
