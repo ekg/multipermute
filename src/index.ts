@@ -15,7 +15,7 @@ value for i.
 [h, i, j] ← init(E) 
 visit(h) 
 while j.n ≠ φ orj.v <h.v do
-    if j.n ≠    φ and i.v ≥ j.n.v then 
+    if j.n ≠ φ and i.v ≥ j.n.v then 
         s←j
     else
         s←i 
@@ -46,20 +46,26 @@ function visit<T>(h: ListNode, remap: T[], l: number) {
 // p must be sorted in ascending order
 function * mp_gen<T>(p: number[], remap: T[], cycle: boolean) {
   const l = p.length;
+
+  // If the input is empty, exit.
+  // There is only one permutation of the empty set.
   if (l === 0) {
     yield [];
     return;
   }
 
-  do {
-    let h: ListNode = { v: p[0], n: null };
-    let i: ListNode = h;
-    let j: ListNode = h;
-    if (l > 1) h = i = { v: p[1], n: h };
-    for (let k = 2; k < l; ++k) {
-      h = { v: p[k], n: h };
-    }
+  // Init
+  let h: ListNode = { v: p[0], n: null };
+  let i: ListNode = h; // penultimate node
+  let j: ListNode = h; // final node
+  if (l > 1) h = i = { v: p[1], n: h };
+  for (let k = 2; k < l; ++k) {
+    h = { v: p[k], n: h };
+  }
 
+  for(;;) {
+
+    // Visit permutations of the list
     yield visit(h, remap, l);
     while (j.n || j.v < h.v) {
       const s = (j.n && i.v >= j.n.v) ? j : i;
@@ -73,7 +79,23 @@ function * mp_gen<T>(p: number[], remap: T[], cycle: boolean) {
       h = t;
       yield visit(h, remap, l);
     }
-  } while(cycle);
+
+    if (cycle) {
+      // Reset
+      // This is different from initialization
+      // because we don't need to allocate new
+      // list nodes.
+      i = h; // penultimate node
+      j = h; // final node
+
+      for (let k = l - 1; k > 0; k--) {
+        j.v = p[k];
+        i = j;
+        j = j.n as ListNode;
+      }
+      j.v = p[0];
+    } else return;
+  }
 }
 
 function multiplicity2sorted(mults: number[]) {
