@@ -12,9 +12,14 @@ null pointer is given by φ. Note: If E is empty, then init(E) should exit.
 Also, if E contains only one element, then init(E) does not need to provide a
 value for i.
 
+A linked list must be used instead of an array because, as long as we keep a
+reference to the nodes at the removal and insertion points, arbitrary shifts
+(rotations of sub-lists) can be performed in constant time; this is what h, i,
+and j are for.
+
 [h, i, j] ← init(E) 
 visit(h) 
-while j.n ≠ φ orj.v <h.v do
+while j.n ≠ φ or j.v < h.v do
     if j.n ≠ φ and i.v ≥ j.n.v then 
         s←j
     else
@@ -67,8 +72,12 @@ function * mp_gen<T>(p: number[], remap: T[], cycle: boolean) {
 
     // Visit permutations of the list
     yield visit(h, remap, l);
-    while (j.n || j.v < h.v) {
-      const s = (j.n && i.v >= j.n.v) ? j : i;
+    let s: ListNode;
+    for (;;) {
+      if (j.n) s = i.v >= j.n.v ? j : i;
+      else if (j.v >= h.v) break;
+      else s = i;
+
       const t = s.n as ListNode;
       s.n = t.n;
       t.n = h;
