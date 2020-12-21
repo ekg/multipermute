@@ -51,6 +51,52 @@ multipermute([1,2,3], console.log)
 2 1 0 2
 ```
 
+### Full Node API
+
+The JS module exports a single value, the `multipermute` function. It has the following overloaded type signature:
+
+```ts
+function multipermute<T>(multiset: Iterable<T>, cb: (p: T[]) => void): void;
+function multipermute<T>(multiset: Iterable<T>): Generator<T[]>;
+function multipermute<T>(multiset: Iterable<T>, opts: { cb: (p: T[]) => void; eq?: (a: T, b: T) => boolean; cycle?: boolean; }): void;
+function multipermute<T>(multiset: Iterable<T>, opts: { eq?: (a: T, b: T) => boolean; cycle?: boolean; }): Generator<T[]>;
+```
+
+If a `cb` argument is provided, either as the second argument or as a field in an options argument, `multipermute` will synchronously call the provided function with each sequential permutation, and return `undefined`. If a `cb` argument is not provided, or is not a function, `multipermute` will instead return a generator object which produced the permutations. If an `eq` function is provided, it will be used to determine which elements of the multiset are equal. Otherwise, `===` comparison is used.
+If the `cycle` option is set to `true`, permutations will be produced indefinitely, repeating from the beginning once all permutations have been produced. This is slightly more efficient than manually calling `multipermute` multiple times.
+
+The first permutation produced is guaranteed to have all elements' first occurrences in the same order as they were provided in the input.
+
+The `multipermute` function also has several other auxiliary methods attached:
+
+```ts
+multipermute.from_multiplicities(multiplicities: Iterable<number>): Generator<number[]>;
+multipermute.from_multiplicities(multiplicities: Iterable<number>, cb: (p: number[]) => void): void;
+multipermute.from_multiplicities<T>(multiplicities: Iterable<number>, opts: { elements: Iterable<T>; cycle?: boolean; }): Generator<T[]>;
+multipermute.from_multiplicities(multiplicities: Iterable<number>, opts: { cb: (p: number[]) => void; cycle?: boolean; }): void;
+multipermute.from_multiplicities<T>(multiplicities: Iterable<number>, opts: { elements: Iterable<T>; cb: (p: T[]) => void; cycle?: boolean; }): void;
+```
+
+`from_multiplicities` takes the multiplicities of each element of the multiset, rather than the set itself. If an `elements` argument is provided, the given elements will be mapped to multiplicities in order and one-to-one, and will be returned in the generated permutations. Otherwise, integers will be used as the set elements.
+
+As with the main `multipermute` function, providing a `cb` argument to `from_multiplicities` will cause it to return `undefined`, while it will return a generator otherwise, and setting `cycle` to `true` will result in repeated indefinite production.
+
+```ts
+multipermute.from_entries<T>(elements: Iterable<[T, number]>, cb: (p: T[]) => void): void;
+multipermute.from_entries<T>(elements: Iterable<[T, number]>): Generator<T[]>;
+multipermute.from_entries<T>(elements: Iterable<[T, number]>, opts: { cycle?: boolean; }): Generator<T[]>;
+multipermute.from_entries<T>(elements: Iterable<[T, number]>, opts: { cb: (p: T[]) => void; cycle?: boolean; }): void;
+```
+
+`from_entries` is similar to `from_multiplicities`, but rather than requiring the multiset elements themselves to be provided as a second argument, it accepts a sequence of `[Element, multiplicity]` pairs. This can be used to generate permutations directly from the return values of, e.g., `Object.entries()` or `Map.prototype.entries()`.
+
+```ts
+multipermute.count_multiset<T>(elements: Iterable<T>, eq?: (a: T, b: T) => boolean): number;
+multipermute.count_multiplicities(multiplicities: Iterable<number>): number;
+```
+
+These two functions can be used to determine how many permutations will be generated for a given list of multiplicities or actual multiset elements, without actually generating them.
+
 ### multipermute.cpp
 
 Included is a C++ library/program which contains a generic function to generate multiset permutations for vectors of any type of object. 
