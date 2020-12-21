@@ -186,7 +186,7 @@ function ms2multiplicities<T>(multiset: Iterable<T>, eq?: (a: T, b: T) => boolea
   const mults: number[] = [];
   if (eq) {
     // If we have a custom equality function,
-    // fall back on an implicity n^2 map.
+    // fall back on an implicit O(n^2) map.
     outer: for (const e of multiset) {
       for (let i = remap.length - 1; i >= 0; i--) {
         if (eq(remap[i], e)) {
