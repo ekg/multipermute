@@ -39,8 +39,7 @@ end while
 
 type ListNode = { n: ListNode | null; v: number };
 
-function visit<T>(h: ListNode, remap: T[], l: number) {
-  const p: T[] = [];
+function visit<T>(h: ListNode, remap: T[], l: number, p: T[]) {
   for (let i = l - 1; i >= 0; i--) {
     p[i] = remap[h.v];
     h = h.n as ListNode;
@@ -59,6 +58,9 @@ function * mp_gen<T>(p: number[], remap: T[], cycle: boolean) {
     return;
   }
 
+  // preallocate and reuse the output array
+  const pv = p.map(i => remap[i]);
+
   // Init
   let h: ListNode = { v: p[0], n: null };
   let i: ListNode = h; // penultimate node
@@ -71,7 +73,7 @@ function * mp_gen<T>(p: number[], remap: T[], cycle: boolean) {
   for(;;) {
 
     // Visit permutations of the list
-    yield visit(h, remap, l);
+    yield visit(h, remap, l, pv);
     let s: ListNode;
     for (;;) {
       if (j.n) s = i.v >= j.n.v ? j : i;
@@ -86,7 +88,7 @@ function * mp_gen<T>(p: number[], remap: T[], cycle: boolean) {
       }
       j = i.n as ListNode;
       h = t;
-      yield visit(h, remap, l);
+      yield visit(h, remap, l, pv);
     }
 
     if (cycle) {
